@@ -14,39 +14,37 @@ _Наш сервис помогает людям распоряжаться св
 - [x] **скорость** :horse_racing:
 
 
+## Наш стек:
+
+:one: **Java**  
+:two: **Spring Boot**  
+:three: **PostgreSQL**  
+
 ## Как это работает?
 
 **Для любителей серьёзных переговоров и пафоса**:
 ```plantuml
 @startuml diagram
 
-title Наш сервис
+title GPB mini-bank
 
 Actor Пользователь as u
-participant Сервис as s
-participant Кэш as k
-Database Data as d
+participant frontend as fl
+participant middle as ml
+participant backend as bl
 
-
-u -[#red]> s: http-запрос
-activate s
-s -[#red]> k: проверяем кэш
-activate k
-alt если данные в кэше
-    k -[#blue]> s: получаем данные из кэша
-    deactivate k
-else если данных в кэше нет
-    s -[#red]> d: сервис производит некоторые операции с data
-    activate d
-    d -[#blue]> s: получаем некоторые данные
-    deactivate d
-    s -[#red]> k: кладём данные в кэш
-    activate k
-    k -[#blue]> s: возвращаемся
-    deactivate k
-end
-s -[#blue]> u: http-ответ
-deactivate s
+u -[#red]> fl: выбрал команду
+activate fl
+fl -[#red]> ml: http-запрос
+activate ml
+ml -[#red]> bl: http-запрос
+activate bl
+bl -[#blue]> ml: http-ответ
+deactivate bl
+ml -[#blue]> fl: http-ответ
+deactivate ml
+fl -[#blue]> u: получил результат команды
+deactivate fl
 
 @enduml
 ```
