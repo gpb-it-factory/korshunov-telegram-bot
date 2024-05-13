@@ -16,9 +16,10 @@ _Наш сервис помогает людям распоряжаться св
 
 ## Наш стек:
 
-:one: **Java**  
-:two: **Spring Boot**  
-:three: **PostgreSQL**  
+:one: [Java](https://www.java.com/ru/)  
+:two: [Spring Boot](https://spring.io/projects/spring-boot)  
+:three: [PostgreSQL](https://www.postgresql.org/)  
+:four: [Gradle](https://gradle.org/)
 
 ## Как это работает?
 
@@ -51,3 +52,10 @@ deactivate fl
 **Для любителей расслабиться и поюморить (а также чёрных фонов):**
 
 ![service.png](pictures/service.png)
+
+## Контакты:
+По поводу вопросов и предложений обращайтесь :arrow_down:  
+
+
+:speech_balloon: Telegram: [@dmitkorsh](https://t.me/dmitkorsh)  
+:mailbox: Email: <a href="mailto:dashima.1998@mail.ru">dashima.1998@mail.ru</a>
