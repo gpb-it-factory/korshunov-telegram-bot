@@ -51,7 +51,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                 log.info("Ответ успешно отправлен.");
             } catch (TelegramApiException e) {
                 log.error("Произошла ошибка во время отправки ответа '{}'", e.getMessage());
-                System.out.print(e.getMessage());
             }
         }
     }
