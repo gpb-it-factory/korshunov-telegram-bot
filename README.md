@@ -1,7 +1,7 @@
 GPB мини-банк 
 ===
 
-![logo](pictures/logo.png)
+![logo](images/logo.png)
 
 _Мы - один из крупнейших универсальных банков России, приступаем к разработке нового проекта - GPB мини-банк. Наш сервис помогает людям распоряжаться своими деньгами так, как им хочется._
 
@@ -58,7 +58,7 @@ deactivate fl
 ```
 **Для любителей расслабиться и поюморить (а также чёрных фонов):**
 
-![service.png](pictures/service.png)
+![service.png](images/service.png)
 
 ## Quick Start: <a name="quick-start"></a>
 _Для Linux:_
