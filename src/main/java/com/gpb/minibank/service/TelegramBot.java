@@ -1,10 +1,13 @@
 package com.gpb.minibank.service;
 
 import com.gpb.minibank.service.commandMaker.CommandMaker;
+import com.gpb.minibank.service.commandMaker.commands.Command;
 import com.gpb.minibank.service.messageCreater.MessageCreater;
 import com.gpb.minibank.service.messageSender.MessageSender;
 import lombok.extern.slf4j.Slf4j;
 import org.jvnet.hk2.annotations.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -14,9 +17,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Service
 public class TelegramBot extends TelegramLongPollingBot {
 
-    private final String botName;
+    @Autowired
+    MessageSender messageSender;
 
-    private final String botToken;
+    private final String botName;
 
     public TelegramBot(
             DefaultBotOptions options,
@@ -24,7 +28,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             String botToken) {
         super(options, botToken);
         this.botName = botName;
-        this.botToken = botToken;
     }
 
     @Override
@@ -36,8 +39,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             log.info("! Получено сообщение ! ");
-            // достаём команду из сообщения
-            var command = update.getMessage().getText();
             // выполняем и получаем результат выбранной пользователем команды
             var resultOfCommand = CommandMaker.work(update);
             // создаём ответ
@@ -47,7 +48,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             try {
                 // отправляем ответ пользователю
                 log.info("Отправляю ответ!");
-                new MessageSender(this.botToken, message).sendMessage();
+                messageSender.sendMessage(message);
                 log.info("Ответ успешно отправлен.");
             } catch (TelegramApiException e) {
                 log.error("Произошла ошибка во время отправки ответа '{}'", e.getMessage());
