@@ -2,7 +2,7 @@ package com.gpb.minibank.service.commandMaker;
 
 
 import com.gpb.minibank.service.commandMaker.commands.Command;
-import com.gpb.minibank.service.commandMaker.commands.Ponk;
+import com.gpb.minibank.service.commandMaker.commands.Pink;
 import com.gpb.minibank.service.commandMaker.commands.Start;
 import com.gpb.minibank.service.commandMaker.commands.WrongCommand;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ public class CommandMaker {
             case "/start":
                 yield new Start(update);
             case "/pink":
-                yield new Ponk();
+                yield new Pink();
             default:
                 wrong = true;
                 yield new WrongCommand(update);
@@ -32,7 +32,7 @@ public class CommandMaker {
             log.info("Команда 'WrongCommand' выполнена!");
             return result;
         }
-        log.info("Выполняется команда '{}'!", commandString);
+        log.info("Выполняется команда '{}'.", commandString);
         var result = command.exec();
         log.info("Команда '{}' выполнена!", commandString);
         return result;
