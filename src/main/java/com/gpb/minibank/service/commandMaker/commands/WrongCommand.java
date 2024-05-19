@@ -12,6 +12,6 @@ public class WrongCommand implements Command {
 
     @Override
     public String exec() {
-        return "Command " + update.getMessage().getText() + " not found!";
+        return String.format("Я не умею выполнять команду '%s'!", update.getMessage().getText());
     }
 }
