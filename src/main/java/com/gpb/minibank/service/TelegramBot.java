@@ -36,14 +36,14 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             log.info("! Получено сообщение ! ");
+            // достаём команду из сообщения
             var command = update.getMessage().getText();
             // выполняем и получаем результат выбранной пользователем команды
-            log.info("Пробую выполнить команду '{}'", command);
             var resultOfCommand = CommandMaker.work(update);
-            log.info("Команда '{}' выполнена!", command);
             // создаём ответ
             log.info("Создаю ответ.");
             var message = MessageCreater.createMessage(update.getMessage().getChatId(), resultOfCommand);
+            log.info("Ответ создан!");
             try {
                 // отправляем ответ пользователю
                 log.info("Отправляю ответ!");
