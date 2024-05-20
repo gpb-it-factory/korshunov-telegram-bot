@@ -12,7 +12,7 @@ public class CommandMaker {
 
     public static String work(Update update) {
         var commandString = update.getMessage().getText();
-        return  switch (commandString) {
+        return switch (commandString) {
             case "/start":
                 log.info("Выполняю команду {}!", commandString);
                 yield new Start(update).exec();
