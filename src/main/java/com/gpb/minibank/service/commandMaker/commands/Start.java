@@ -15,7 +15,7 @@ public class Start implements Command {
         return "Привет, "
                 + update.getMessage().getChat().getFirstName()
                 + "!\nЯ telegram-бот от GPB мини-банка!"
-                + "\n\nЯ умею выполнять команду /pink."
-                + "\nНапиши (или нажми) /pink, и я отвечу тебе!";
+                + "\n\nЯ умею выполнять команду /ping."
+                + "\nНапиши (или нажми) /ping, и я отвечу тебе!";
     }
 }

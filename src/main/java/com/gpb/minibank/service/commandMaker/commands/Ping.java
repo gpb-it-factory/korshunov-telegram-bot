@@ -1,10 +1,10 @@
 package com.gpb.minibank.service.commandMaker.commands;
 
 
-public class Pink implements Command {
+public class Ping implements Command {
 
     @Override
     public String exec() {
-        return "ponk";
+        return "pong";
     }
 }

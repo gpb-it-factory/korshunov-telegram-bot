@@ -1,6 +1,6 @@
 package com.gpb.minibank.service.commandMaker;
 
-import com.gpb.minibank.service.commandMaker.commands.Pink;
+import com.gpb.minibank.service.commandMaker.commands.Ping;
 import com.gpb.minibank.service.commandMaker.commands.Start;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,8 +15,8 @@ public class CommandMaker {
         return  switch (commandString) {
             case "/start":
                 yield new Start(update).exec();
-            case "/pink":
-                yield new Pink().exec();
+            case "/ping":
+                yield new Ping().exec();
             default:
                 yield String.format("Я не умею выполнять команду '%s'!", commandString);
         };
