@@ -1,10 +1,7 @@
 package com.gpb.minibank.service.commandMaker;
 
-
-import com.gpb.minibank.service.commandMaker.commands.Command;
 import com.gpb.minibank.service.commandMaker.commands.Pink;
 import com.gpb.minibank.service.commandMaker.commands.Start;
-import com.gpb.minibank.service.commandMaker.commands.WrongCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -15,26 +12,13 @@ public class CommandMaker {
 
     public static String work(Update update) {
         var commandString = update.getMessage().getText();
-        boolean wrong = false;
-        Command command = switch (commandString) {
+        return  switch (commandString) {
             case "/start":
-                yield new Start(update);
+                yield new Start(update).exec();
             case "/pink":
-                yield new Pink();
+                yield new Pink().exec();
             default:
-                wrong = true;
-                yield new WrongCommand(update);
+                yield String.format("Я не умею выполнять команду '%s'!", commandString);
         };
-
-        if (wrong) {
-            log.info("Команда '{}' не найдена! Выполняется команда 'WrongCommand'.", commandString);
-            var result = command.exec();
-            log.info("Команда 'WrongCommand' выполнена!");
-            return result;
-        }
-        log.info("Выполняется команда '{}'.", commandString);
-        var result = command.exec();
-        log.info("Команда '{}' выполнена!", commandString);
-        return result;
     }
 }
