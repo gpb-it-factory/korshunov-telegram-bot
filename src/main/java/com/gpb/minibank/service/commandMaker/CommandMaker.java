@@ -14,10 +14,13 @@ public class CommandMaker {
         var commandString = update.getMessage().getText();
         return  switch (commandString) {
             case "/start":
+                log.info("Выполняю команду {}!", commandString);
                 yield new Start(update).exec();
             case "/ping":
+                log.info("Выполняю команду {}!", commandString);
                 yield new Ping().exec();
             default:
+                log.info("Получена неизвестная команда '{}'!", commandString);
                 yield String.format("Я не умею выполнять команду '%s'!", commandString);
         };
     }
