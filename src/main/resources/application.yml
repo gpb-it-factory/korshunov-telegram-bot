@@ -1,0 +1,3 @@
+spring.application.name: minibank
+bot.name: {name}
+bot.token: {token}
