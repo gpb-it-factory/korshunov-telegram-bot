@@ -7,11 +7,6 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
-    env:
-      SECRET_NAME: ${{ secrets.BOT_NAME }}
-      SECRET_TOKEN: ${{ secrets.BOT_TOKEN }}
-      PLACE_NAME: "bot.name:"
-      PLACE_TOKEN: "bot.token:"
     steps:
       - name: copy project
         uses: actions/checkout@v4
@@ -20,9 +15,5 @@ jobs:
         with:
           java-version: '17'
           distribution: 'oracle'
-      - name: add name
-        run: cd src/main/resources && echo "$PLACE_NAME $SECRET_NAME" >> application.yml
-      - name: add token and show
-        run: cd src/main/resources && echo "$PLACE_TOKEN $SECRET_TOKEN" >> application.yml && cat application.yml
       - name: build and test
         run: ./gradlew build
