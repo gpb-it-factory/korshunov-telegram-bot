@@ -1,8 +1,10 @@
 package com.gpb.minibank.service.commandMaker;
 
 import com.gpb.minibank.service.commandMaker.commands.Ping;
+import com.gpb.minibank.service.commandMaker.commands.Register;
 import com.gpb.minibank.service.commandMaker.commands.Start;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -10,18 +12,34 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Component
 public class CommandMaker {
 
-    public static String work(Update update) {
+    @Autowired
+    private Start start;
+
+    @Autowired
+    private Ping ping;
+
+    @Autowired
+    private Register register;
+
+    public String work(Update update) {
         var commandString = update.getMessage().getText();
         return switch (commandString) {
             case "/start":
-                log.info("Выполняю команду {}!", commandString);
-                yield new Start(update).exec();
+                writeLog(commandString);
+                yield start.exec(update);
             case "/ping":
-                log.info("Выполняю команду {}!", commandString);
-                yield new Ping().exec();
+                writeLog(commandString);
+                yield ping.exec();
+            case "/register":
+                writeLog(commandString);
+                yield register.exec(update);
             default:
                 log.info("Получена неизвестная команда '{}'!", commandString);
                 yield String.format("Я не умею выполнять команду '%s'!", commandString);
         };
+    }
+
+    public void writeLog(String commandString) {
+        log.info("Выполняю команду {}!", commandString);
     }
 }

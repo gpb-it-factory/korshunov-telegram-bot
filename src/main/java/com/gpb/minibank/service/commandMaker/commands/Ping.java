@@ -1,9 +1,10 @@
 package com.gpb.minibank.service.commandMaker.commands;
 
+import org.springframework.stereotype.Component;
 
-public class Ping implements Command {
+@Component
+public class Ping {
 
-    @Override
     public String exec() {
         return "pong";
     }

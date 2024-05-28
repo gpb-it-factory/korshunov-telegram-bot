@@ -3,11 +3,17 @@ package com.gpb.minibank.service.commandMaker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+@SpringBootTest
 public class CommandMakerTest {
+
+    @Autowired
+    private CommandMaker commandMaker;
 
     static Update updateResult;
 
@@ -31,21 +37,21 @@ public class CommandMakerTest {
     @Test
     void testCommandMakerStart() {
         updateResult.getMessage().setText("/start");
-        var result = CommandMaker.work(updateResult);
+        var result = commandMaker.work(updateResult);
         Assertions.assertEquals(result, textMessage);
     }
 
     @Test
     void testCommandMakerPing() {
         updateResult.getMessage().setText("/ping");
-        var result = CommandMaker.work(updateResult);
+        var result = commandMaker.work(updateResult);
         Assertions.assertEquals(result, "pong");
     }
 
     @Test
     void testCommandMakerWrongCommand() {
         updateResult.getMessage().setText("/wrongCommand");
-        var result = CommandMaker.work(updateResult);
+        var result = commandMaker.work(updateResult);
         Assertions.assertEquals(result, "Я не умею выполнять команду '/wrongCommand'!");
     }
 }
