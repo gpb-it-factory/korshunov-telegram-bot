@@ -1,19 +1,19 @@
 package com.gpb.minibank.service.commandMaker;
 
+import com.gpb.minibank.service.commandMaker.commands.Ping;
+import com.gpb.minibank.service.commandMaker.commands.Register;
+import com.gpb.minibank.service.commandMaker.commands.Start;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@SpringBootTest
+
 public class CommandMakerTest {
 
-    @Autowired
-    private CommandMaker commandMaker;
+    static CommandMaker commandMaker;
 
     static Update updateResult;
 
@@ -32,12 +32,17 @@ public class CommandMakerTest {
         var update = new Update();
         update.setMessage(message);
         updateResult = update;
+        commandMaker = new CommandMaker(
+                new Start(),
+                new Ping(),
+                new Register()
+        );
     }
 
     @Test
     void testCommandMakerStart() {
         updateResult.getMessage().setText("/start");
-        var result = commandMaker.work(updateResult);
+        var result = new Start().exec(updateResult);
         Assertions.assertEquals(result, textMessage);
     }
 

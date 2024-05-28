@@ -12,14 +12,17 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Component
 public class CommandMaker {
 
-    @Autowired
-    private Start start;
+    private final Start start;
 
-    @Autowired
-    private Ping ping;
+    private final Ping ping;
 
-    @Autowired
-    private Register register;
+    private final Register register;
+
+    public CommandMaker(Start start, Ping ping, Register register) {
+        this.start = start;
+        this.ping = ping;
+        this.register = register;
+    }
 
     public String work(Update update) {
         var commandString = update.getMessage().getText();
