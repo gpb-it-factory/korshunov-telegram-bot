@@ -42,7 +42,7 @@ public class CommandMakerTest {
     @Test
     void testCommandMakerStart() {
         updateResult.getMessage().setText("/start");
-        var result = new Start().exec(updateResult);
+        var result = commandMaker.work(updateResult);
         Assertions.assertEquals(result, textMessage);
     }
 
