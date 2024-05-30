@@ -13,13 +13,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Slf4j
 @Service
-public class TelegramBot extends TelegramLongPollingBot {
+public final class TelegramBot extends TelegramLongPollingBot {
 
-    @Autowired
-    MessageSender messageSender;
+    private MessageSender messageSender;
 
-    @Autowired
-    CommandMaker commandMaker;
+    private CommandMaker commandMaker;
 
     private final String botName;
 
@@ -52,5 +50,15 @@ public class TelegramBot extends TelegramLongPollingBot {
                 log.error("Произошла ошибка во время отправки ответа '{}'!", e.getMessage());
             }
         }
+    }
+
+    @Autowired
+    private void setMessageSender(MessageSender messageSender) {
+        this.messageSender = messageSender;
+    }
+
+    @Autowired
+    private void setCommandMaker(CommandMaker commandMaker) {
+        this.commandMaker = commandMaker;
     }
 }

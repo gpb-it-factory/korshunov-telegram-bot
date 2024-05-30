@@ -4,7 +4,6 @@ import com.gpb.minibank.service.commandMaker.commands.Ping;
 import com.gpb.minibank.service.commandMaker.commands.Register;
 import com.gpb.minibank.service.commandMaker.commands.Start;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
