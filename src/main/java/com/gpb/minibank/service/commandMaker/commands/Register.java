@@ -1,9 +1,7 @@
 package com.gpb.minibank.service.commandMaker.commands;
 
 import com.gpb.minibank.service.commandMaker.dto.CreateUserDTO;
-import com.gpb.minibank.service.commandMaker.paths.Paths;
-import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.client.RestTemplateBuilderConfigurer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +15,11 @@ public class Register implements Command {
 
     private final RestTemplate restTemplate;
 
-    public Register(RestTemplateBuilder restTemplateBuilder) {
+    private final String path;
+
+    public Register(RestTemplateBuilder restTemplateBuilder, @Value("${bot.service.register.path}") String path) {
         this.restTemplate = restTemplateBuilder.build();
+        this.path = path;
     }
 
     public String exec(Update update) throws RestClientException {
@@ -32,7 +33,7 @@ public class Register implements Command {
     public String runRequest(Update update) {
         var id = update.getMessage().getChatId();
         HttpEntity<CreateUserDTO> entity = new HttpEntity<>(new CreateUserDTO(id));
-        ResponseEntity<String> result = restTemplate.postForEntity(Paths.REGISTER, entity, String.class);
+        ResponseEntity<String> result = restTemplate.postForEntity(path, entity, String.class);
         return result.getBody();
     }
 }
