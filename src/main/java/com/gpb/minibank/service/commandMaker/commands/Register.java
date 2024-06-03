@@ -23,10 +23,10 @@ public class Register implements Command {
     public String exec(Update update) {
         try {
             var result = runRequest(update);
-            return answerOnRequest(result);
+            return getAnswerOnRequest(result);
         } catch (HttpStatusCodeException error) {
             var result = ResponseEntity.status(error.getStatusCode()).body(error.getResponseBodyAsString());
-            return answerOnRequest(result);
+            return getAnswerOnRequest(result);
         } catch (RestClientException error) {
             return "Сервис не доступен!";
         }
@@ -38,7 +38,7 @@ public class Register implements Command {
         return new RestTemplate().postForEntity(path, entity, String.class);
     }
 
-    public String answerOnRequest(ResponseEntity<String> response) {
+    public String getAnswerOnRequest(ResponseEntity<String> response) {
         if (response.getStatusCode().isSameCodeAs(HttpStatus.NO_CONTENT)) {
             return "Вы успешно зарегистрированы!";
         }
