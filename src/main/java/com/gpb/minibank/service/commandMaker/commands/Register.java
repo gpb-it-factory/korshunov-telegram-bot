@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -26,6 +27,8 @@ public class Register implements Command {
         } catch (HttpStatusCodeException error) {
             var result = ResponseEntity.status(error.getStatusCode()).body(error.getResponseBodyAsString());
             return answerOnRequest(result);
+        } catch (RestClientException error) {
+            return "Сервис не доступен!";
         }
     }
 
