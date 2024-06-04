@@ -1,4 +1,4 @@
-package com.gpb.minibank.service.commandMaker.dto.request;
+package com.gpb.minibank.service.commandMaker.commands.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
