@@ -5,7 +5,6 @@ import com.gpb.minibank.service.messageCreater.MessageCreater;
 import com.gpb.minibank.service.messageSender.MessageSender;
 import lombok.extern.slf4j.Slf4j;
 import org.jvnet.hk2.annotations.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -15,20 +14,22 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Service
 public final class TelegramBot extends TelegramLongPollingBot {
 
-    @Autowired
-    private MessageSender messageSender;
+    private final MessageSender messageSender;
 
-    @Autowired
-    private CommandMaker commandMaker;
+    private final CommandMaker commandMaker;
 
     private final String botName;
 
     public TelegramBot(
             DefaultBotOptions options,
             String botName,
-            String botToken) {
+            String botToken,
+            CommandMaker commandMaker,
+            MessageSender messageSender) {
         super(options, botToken);
         this.botName = botName;
+        this.commandMaker = commandMaker;
+        this.messageSender = messageSender;
     }
 
     @Override
