@@ -1,28 +1,33 @@
 package com.gpb.minibank.service.commandMaker.commands;
 
-import com.gpb.minibank.service.commandMaker.dto.request.CreateUserDTO;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
+import com.gpb.minibank.service.commandMaker.commands.requestRunner.RegisterRequestRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
-public class Register implements Command {
+public final class Register implements Command {
 
-    private final String path;
+    private final String nameOfCommand;
 
-    public Register(@Value("${bot.service.register.path}") String path) {
-        this.path = path;
+    private final RegisterRequestRunner registerRequestRunner;
+
+    public Register(RegisterRequestRunner registerRequestRunner) {
+        this.nameOfCommand = "/register";
+        this.registerRequestRunner = registerRequestRunner;
+    }
+
+    @Override
+    public String getNameOfCommand() {
+        return this.nameOfCommand;
     }
 
     public String exec(Update update) {
         try {
-            var result = runRequest(update);
+            var result = registerRequestRunner.runRequest(update);
             return getAnswerOnRequest(result);
         } catch (HttpStatusCodeException error) {
             var result = ResponseEntity.status(error.getStatusCode()).body(error.getResponseBodyAsString());
@@ -30,12 +35,6 @@ public class Register implements Command {
         } catch (RestClientException error) {
             return "Сервис не доступен!";
         }
-    }
-
-    public ResponseEntity<String> runRequest(Update update) {
-        var id = update.getMessage().getChatId();
-        HttpEntity<CreateUserDTO> entity = new HttpEntity<>(new CreateUserDTO(id));
-        return new RestTemplate().postForEntity(path, entity, String.class);
     }
 
     public String getAnswerOnRequest(ResponseEntity<String> response) {

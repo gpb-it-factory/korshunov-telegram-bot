@@ -4,7 +4,18 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
-public class Start implements Command {
+public final class Start implements Command {
+
+    private final String nameOfCommand;
+
+    public Start() {
+        this.nameOfCommand = "/start";
+    }
+
+    @Override
+    public String getNameOfCommand() {
+        return this.nameOfCommand;
+    }
 
     public String exec(Update update) {
         return "Привет, "
