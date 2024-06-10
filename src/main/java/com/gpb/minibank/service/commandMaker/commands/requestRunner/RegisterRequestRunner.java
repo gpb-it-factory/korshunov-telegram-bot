@@ -23,7 +23,8 @@ public final class RegisterRequestRunner {
 
     public ResponseEntity<String> runRequest(Update update) {
         var id = update.getMessage().getChatId();
-        HttpEntity<CreateUserDTO> entity = new HttpEntity<>(new CreateUserDTO(id));
+        var userName = update.getMessage().getChat().getUserName();
+        HttpEntity<CreateUserDTO> entity = new HttpEntity<>(new CreateUserDTO(id, userName));
         return restTemplate.postForEntity(path, entity, String.class);
     }
 }

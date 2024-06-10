@@ -9,4 +9,6 @@ public class CreateUserDTO {
 
     private Long userId;
 
+    private String name;
+
 }
