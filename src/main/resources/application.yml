@@ -5,4 +5,4 @@ spring:
 bot:
   service:
     register:
-      path: "http://localhost:8081/users"
+      path: "http://localhost:8081/v2/users"
