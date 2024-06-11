@@ -19,7 +19,7 @@ public final class CommandMaker {
     public String work(Update update) {
         var commandFromUser = update.getMessage().getText();
         var command = commandList.stream()
-                .filter(someCommand -> someCommand.getNameOfCommand().equals(commandFromUser))
+                .filter(someCommand -> someCommand.getName().equals(commandFromUser))
                 .findFirst();
         if (command.isPresent()) {
             log.info("Выполняю команду {}!", commandFromUser);

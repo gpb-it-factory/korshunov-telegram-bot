@@ -4,7 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface Command {
 
-    String getNameOfCommand();
+    String getName();
 
     String exec(Update update);
 }

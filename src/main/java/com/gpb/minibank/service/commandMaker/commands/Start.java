@@ -13,7 +13,7 @@ public final class Start implements Command {
     }
 
     @Override
-    public String getNameOfCommand() {
+    public String getName() {
         return this.nameOfCommand;
     }
 
