@@ -1,7 +1,7 @@
-package com.gpb.minibank.service.commandMaker.commands;
+package com.gpb.minibank.service.commandHandler.commands;
 
-import com.gpb.minibank.service.commandMaker.commands.clients.registerClient.RegisterClient;
-import com.gpb.minibank.service.commandMaker.commands.dto.request.CreateUserDTO;
+import com.gpb.minibank.service.commandHandler.commands.clients.registerClient.RegisterClient;
+import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateUserDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

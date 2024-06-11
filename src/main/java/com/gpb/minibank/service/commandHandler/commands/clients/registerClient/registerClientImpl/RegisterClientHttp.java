@@ -1,7 +1,7 @@
-package com.gpb.minibank.service.commandMaker.commands.clients.registerClient.registerClientImpl;
+package com.gpb.minibank.service.commandHandler.commands.clients.registerClient.registerClientImpl;
 
-import com.gpb.minibank.service.commandMaker.commands.clients.registerClient.RegisterClient;
-import com.gpb.minibank.service.commandMaker.commands.dto.request.CreateUserDTO;
+import com.gpb.minibank.service.commandHandler.commands.clients.registerClient.RegisterClient;
+import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateUserDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
