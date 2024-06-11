@@ -1,6 +1,6 @@
-package com.gpb.minibank.service.commandMaker;
+package com.gpb.minibank.service.commandHandler;
 
-import com.gpb.minibank.service.commandMaker.commands.Command;
+import com.gpb.minibank.service.commandHandler.commands.Command;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -8,11 +8,11 @@ import java.util.List;
 
 @Slf4j
 @Component
-public final class CommandMaker {
+public final class CommandHandler {
 
     private final List<Command> commandList;
 
-    public CommandMaker(List<Command> commandList) {
+    public CommandHandler(List<Command> commandList) {
         this.commandList = commandList;
     }
 

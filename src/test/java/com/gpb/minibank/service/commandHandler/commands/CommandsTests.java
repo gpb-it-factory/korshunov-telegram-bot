@@ -1,6 +1,7 @@
-package com.gpb.minibank.service.commandMaker.commands;
+package com.gpb.minibank.service.commandHandler.commands;
 
-import com.gpb.minibank.service.commandMaker.commands.requestRunner.RegisterRequestRunner;
+import com.gpb.minibank.service.commandHandler.commands.clients.registerClient.registerClientImpl.RegisterClientHttp;
+import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateUserDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,12 +22,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class CommandsTests {
 
     @Mock
-    public RegisterRequestRunner registerRequestRunner;
+    public RegisterClientHttp registerClientHttp;
 
     @InjectMocks
     public Register register;
 
-    static Update updateResult;
+    static Update update;
 
     static String textOfResponse = "Привет, "
             + "Василий!"
@@ -38,53 +39,65 @@ public class CommandsTests {
     public static void createUpdate() {
         var chat = new Chat();
         chat.setFirstName("Василий");
-        chat.setLinkedChatId(1000L);
+        chat.setId(1000L);
+        chat.setUserName("@vasyl");
         var message = new Message();
         message.setChat(chat);
-        var update = new Update();
-        update.setMessage(message);
-        updateResult = update;
+        var resultUpdate = new Update();
+        resultUpdate.setMessage(message);
+        update = resultUpdate;
     }
 
     @Test
     void testStart() {
-        updateResult.getMessage().setText("/start");
-        var result = new Start().exec(updateResult);
+        update.getMessage().setText("/start");
+
+        var result = new Start().exec(update);
 
         Assertions.assertEquals(textOfResponse, result);
     }
 
     @Test
     void testPing() {
-        updateResult.getMessage().setText("/ping");
-        var result = new Ping().exec(updateResult);
+        update.getMessage().setText("/ping");
+
+        var result = new Ping().exec(update);
 
         Assertions.assertEquals("pong", result);
     }
 
     @Test
-    void testRegister() {
+    void testRegisterWithCorrectData() {
+        var user = new CreateUserDTO(1000L, "@vasyl");
         Mockito.doReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build())
-                .when(registerRequestRunner).runRequest(updateResult);
-        var result = register.exec(updateResult);
+                .when(registerClientHttp).runRequest(user);
+
+        var result = register.exec(update);
+
         Assertions.assertEquals("Вы успешно зарегистрированы!", result);
     }
 
     @Test
-    void testRegisterWithRestException() {
-        Mockito.doThrow(RestClientException.class)
-                .when(registerRequestRunner).runRequest(updateResult);
-        var result = register.exec(updateResult);
+    void testRegisterWithWrongData() {
+        update.getMessage().getChat().setId(-111L);
+        update.getMessage().getChat().setUserName("");
+        var user = new CreateUserDTO(-111L, "");
+        Mockito.when(registerClientHttp.runRequest(user))
+                .thenThrow(new HttpStatusCodeException(HttpStatus.BAD_REQUEST) {});
 
-        Assertions.assertEquals("Сервис не доступен!", result);
+        var result = register.exec(update);
+
+        Assertions.assertEquals("Произошла ошибка.\n", result);
     }
 
     @Test
-    void testRegisterWithExceptionFromMiddle() {
-        Mockito.when(registerRequestRunner.runRequest(updateResult))
-                .thenThrow(new HttpStatusCodeException(HttpStatus.BAD_REQUEST) {});
-        var result = register.exec(updateResult);
+    void testRegisterWithRestException() {
+        var user = new CreateUserDTO(1000L, "@vasyl");
+        Mockito.doThrow(RestClientException.class)
+                .when(registerClientHttp).runRequest(user);
 
-        Assertions.assertEquals("Произошла ошибка.\n", result);
+        var result = register.exec(update);
+
+        Assertions.assertEquals("Сервис не доступен!", result);
     }
 }

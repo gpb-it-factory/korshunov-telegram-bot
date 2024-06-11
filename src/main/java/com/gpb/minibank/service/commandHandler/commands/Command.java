@@ -1,4 +1,4 @@
-package com.gpb.minibank.service.commandMaker.commands;
+package com.gpb.minibank.service.commandHandler.commands;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 

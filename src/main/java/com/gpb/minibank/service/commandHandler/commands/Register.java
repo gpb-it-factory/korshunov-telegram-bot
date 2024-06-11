@@ -1,6 +1,7 @@
 package com.gpb.minibank.service.commandMaker.commands;
 
-import com.gpb.minibank.service.commandMaker.commands.requestRunner.RegisterRequestRunner;
+import com.gpb.minibank.service.commandMaker.commands.clients.registerClient.RegisterClient;
+import com.gpb.minibank.service.commandMaker.commands.dto.request.CreateUserDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -13,11 +14,11 @@ public final class Register implements Command {
 
     private final String nameOfCommand;
 
-    private final RegisterRequestRunner registerRequestRunner;
+    private final RegisterClient registerClient;
 
-    public Register(RegisterRequestRunner registerRequestRunner) {
+    public Register(RegisterClient registerClient) {
         this.nameOfCommand = "/register";
-        this.registerRequestRunner = registerRequestRunner;
+        this.registerClient = registerClient;
     }
 
     @Override
@@ -27,17 +28,20 @@ public final class Register implements Command {
 
     public String exec(Update update) {
         try {
-            var result = registerRequestRunner.runRequest(update);
-            return getAnswerOnRequest(result);
+            var createUserDTO = new CreateUserDTO(
+                    update.getMessage().getChatId(),
+                    update.getMessage().getChat().getUserName());
+            var response = registerClient.runRequest(createUserDTO);
+            return createMessage(response);
         } catch (HttpStatusCodeException error) {
-            var result = ResponseEntity.status(error.getStatusCode()).body(error.getResponseBodyAsString());
-            return getAnswerOnRequest(result);
+            var response = ResponseEntity.status(error.getStatusCode()).body(error.getResponseBodyAsString());
+            return createMessage(response);
         } catch (RestClientException error) {
             return "Сервис не доступен!";
         }
     }
 
-    public String getAnswerOnRequest(ResponseEntity<String> response) {
+    public String createMessage(ResponseEntity<?> response) {
         if (response.getStatusCode().isSameCodeAs(HttpStatus.NO_CONTENT)) {
             return "Вы успешно зарегистрированы!";
         }

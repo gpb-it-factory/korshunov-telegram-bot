@@ -1,6 +1,6 @@
 package com.gpb.minibank.service;
 
-import com.gpb.minibank.service.commandMaker.CommandMaker;
+import com.gpb.minibank.service.commandHandler.CommandHandler;
 import com.gpb.minibank.service.messageCreater.MessageCreater;
 import com.gpb.minibank.service.messageSender.MessageSender;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
 
     private final MessageSender messageSender;
 
-    private final CommandMaker commandMaker;
+    private final CommandHandler commandHandler;
 
     private final String botName;
 
@@ -24,11 +24,11 @@ public final class TelegramBot extends TelegramLongPollingBot {
             DefaultBotOptions options,
             String botName,
             String botToken,
-            CommandMaker commandMaker,
+            CommandHandler commandHandler,
             MessageSender messageSender) {
         super(options, botToken);
         this.botName = botName;
-        this.commandMaker = commandMaker;
+        this.commandHandler = commandHandler;
         this.messageSender = messageSender;
     }
 
@@ -41,7 +41,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             log.info("! Получено сообщение ! ");
-            var resultOfCommand = commandMaker.work(update);
+            var resultOfCommand = commandHandler.work(update);
             log.info("Создаю ответ.");
             var message = MessageCreater.createMessage(update.getMessage().getChatId(), resultOfCommand);
             log.info("Ответ создан!");

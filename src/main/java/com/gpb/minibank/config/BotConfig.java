@@ -1,7 +1,7 @@
 package com.gpb.minibank.config;
 
 import com.gpb.minibank.service.TelegramBot;
-import com.gpb.minibank.service.commandMaker.CommandMaker;
+import com.gpb.minibank.service.commandHandler.CommandHandler;
 import com.gpb.minibank.service.messageSender.MessageSender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,12 +15,12 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @Configuration
 public class BotConfig {
 
-    private final CommandMaker commandMaker;
+    private final CommandHandler commandHandler;
 
     private final MessageSender messageSender;
 
-    public BotConfig(CommandMaker commandMaker, MessageSender messageSender) {
-        this.commandMaker = commandMaker;
+    public BotConfig(CommandHandler commandHandler, MessageSender messageSender) {
+        this.commandHandler = commandHandler;
         this.messageSender = messageSender;
     }
 
@@ -28,11 +28,11 @@ public class BotConfig {
     public TelegramBot getTelegramBot(
             @Value("${bot.name}") String name,
             @Value("${bot.token}") String token,
-            CommandMaker commandMaker,
+            CommandHandler commandHandler,
             MessageSender messageSender
     ) throws TelegramApiException {
         var botOptions = new DefaultBotOptions();
-        var bot = new TelegramBot(botOptions, name, token, commandMaker, messageSender);
+        var bot = new TelegramBot(botOptions, name, token, commandHandler, messageSender);
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(bot);
         return bot;
