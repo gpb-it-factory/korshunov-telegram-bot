@@ -14,14 +14,11 @@ public final class RegisterClientHttp implements RegisterClient {
     private final String path;
 
     public RegisterClientHttp(@Value("${bot.service.register.path}") String path) {
-//        this.restTemplate = restTemplateBuilder.build();
         this.path = path;
         this.restClient = RestClient.create();
     }
 
     public ResponseEntity<?> runRequest(CreateUserDTO createUserDTO) {
-//        HttpEntity<CreateUserDTO> entity = new HttpEntity<>(new CreateUserDTO(id, userName));
-//        return restTemplate.postForEntity(path, entity, String.class);
         return restClient.post()
                 .uri(path)
                 .body(createUserDTO)
