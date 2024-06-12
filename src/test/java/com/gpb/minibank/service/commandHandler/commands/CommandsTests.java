@@ -87,7 +87,7 @@ public class CommandsTests {
 
         var result = register.exec(update);
 
-        Assertions.assertEquals("Произошла ошибка.\n", result);
+        Assertions.assertEquals("Упс!\nЧто-то пошло не так!", result);
     }
 
     @Test

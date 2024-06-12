@@ -34,7 +34,7 @@ public final class Register implements Command {
             var response = registerClient.runRequest(createUserDTO);
             return createMessage(response);
         } catch (HttpStatusCodeException error) {
-            var response = ResponseEntity.status(error.getStatusCode()).body(error.getResponseBodyAsString());
+            ResponseEntity<?> response = ResponseEntity.status(error.getStatusCode()).build();
             return createMessage(response);
         } catch (RestClientException error) {
             return "Сервис не доступен!";
@@ -45,6 +45,6 @@ public final class Register implements Command {
         if (response.getStatusCode().isSameCodeAs(HttpStatus.NO_CONTENT)) {
             return "Вы успешно зарегистрированы!";
         }
-        return "Произошла ошибка.\n" + response.getBody();
+        return "Упс!\nЧто-то пошло не так!";
     }
 }
