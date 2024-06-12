@@ -78,6 +78,19 @@ public class CommandsTests {
     }
 
     @Test
+    void testRegisterWithErrorCode() {
+        update.getMessage().getChat().setId(-111L);
+        update.getMessage().getChat().setUserName("");
+        var user = new CreateUserDTO(-111L, "");
+        Mockito.when(registerClientHttp.runRequest(user))
+                .thenThrow(new HttpStatusCodeException(HttpStatus.NOT_FOUND) {});
+
+        var result = register.exec(update);
+
+        Assertions.assertEquals("Упс!\nЧто-то пошло не так!", result);
+    }
+
+    @Test
     void testRegisterWithWrongData() {
         update.getMessage().getChat().setId(-111L);
         update.getMessage().getChat().setUserName("");
@@ -87,7 +100,7 @@ public class CommandsTests {
 
         var result = register.exec(update);
 
-        Assertions.assertEquals("Упс!\nЧто-то пошло не так!", result);
+        Assertions.assertEquals("Ошибка!\nВы уже зарегистрированы!", result);
     }
 
     @Test

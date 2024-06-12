@@ -44,6 +44,8 @@ public final class Register implements Command {
     public String createMessage(ResponseEntity<?> response) {
         if (response.getStatusCode().isSameCodeAs(HttpStatus.NO_CONTENT)) {
             return "Вы успешно зарегистрированы!";
+        } else if (response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST)) {
+            return "Ошибка!\nВы уже зарегистрированы!";
         }
         return "Упс!\nЧто-то пошло не так!";
     }
