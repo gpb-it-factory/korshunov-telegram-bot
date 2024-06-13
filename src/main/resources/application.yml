@@ -1,1 +1,8 @@
-spring.application.name: minibank
+spring:
+  application:
+    name: minibank
+
+bot:
+  service:
+    register:
+      path: "http://localhost:8081/v2/users"

@@ -1,17 +1,23 @@
-package com.gpb.minibank.service.commandMaker.commands;
+package com.gpb.minibank.service.commandHandler.commands;
 
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class Start implements Command {
+@Component
+public final class Start implements Command {
 
-    private Update update;
+    private final String nameOfCommand;
 
-    public Start(Update update) {
-        this.update = update;
+    public Start() {
+        this.nameOfCommand = "/start";
     }
 
     @Override
-    public String exec() {
+    public String getName() {
+        return this.nameOfCommand;
+    }
+
+    public String exec(Update update) {
         return "Привет, "
                 + update.getMessage().getChat().getFirstName()
                 + "!\nЯ telegram-бот от GPB мини-банка!"
