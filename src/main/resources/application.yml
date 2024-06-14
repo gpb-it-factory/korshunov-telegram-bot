@@ -6,3 +6,5 @@ bot:
   service:
     register:
       path: "http://localhost:8081/v2/users"
+    create_account:
+      path: "http://localhost:8081/v2/users/{id}/accounts"

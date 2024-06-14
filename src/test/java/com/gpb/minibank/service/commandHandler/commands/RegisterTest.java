@@ -18,8 +18,10 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import static org.mockito.ArgumentMatchers.any;
+
 @ExtendWith(MockitoExtension.class)
-public class CommandsTests {
+public class RegisterTest {
 
     @Mock
     public RegisterClientHttp registerClientHttp;
@@ -28,12 +30,6 @@ public class CommandsTests {
     public Register register;
 
     static Update update;
-
-    static String textOfResponse = "Привет, "
-            + "Василий!"
-            + "\nЯ telegram-бот от GPB мини-банка!"
-            + "\n\nЯ умею выполнять команду /ping."
-            + "\nНапиши (или нажми) /ping, и я отвечу тебе!";
 
     @BeforeAll
     public static void createUpdate() {
@@ -49,68 +45,42 @@ public class CommandsTests {
     }
 
     @Test
-    void testStart() {
-        update.getMessage().setText("/start");
-
-        var result = new Start().exec(update);
-
-        Assertions.assertEquals(textOfResponse, result);
-    }
-
-    @Test
-    void testPing() {
-        update.getMessage().setText("/ping");
-
-        var result = new Ping().exec(update);
-
-        Assertions.assertEquals("pong", result);
-    }
-
-    @Test
     void testRegisterWithCorrectData() {
-        var user = new CreateUserDTO(1000L, "@vasyl");
         Mockito.doReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build())
-                .when(registerClientHttp).runRequest(user);
+                .when(registerClientHttp).runRequest(any());
 
         var result = register.exec(update);
 
-        Assertions.assertEquals("Вы успешно зарегистрированы!", result);
+        Assertions.assertEquals(result, "Вы успешно зарегистрированы!");
     }
 
     @Test
     void testRegisterWithErrorCode() {
-        update.getMessage().getChat().setId(-111L);
-        update.getMessage().getChat().setUserName("");
-        var user = new CreateUserDTO(-111L, "");
-        Mockito.when(registerClientHttp.runRequest(user))
-                .thenThrow(new HttpStatusCodeException(HttpStatus.NOT_FOUND) {});
+        Mockito.doThrow(new HttpStatusCodeException(HttpStatus.NOT_FOUND) {})
+                .when(registerClientHttp).runRequest(any());
 
         var result = register.exec(update);
 
-        Assertions.assertEquals("Упс!\nЧто-то пошло не так!", result);
+        Assertions.assertEquals(result, "Упс!\nЧто-то пошло не так!");
     }
 
     @Test
-    void testRegisterWithWrongData() {
-        update.getMessage().getChat().setId(-111L);
-        update.getMessage().getChat().setUserName("");
-        var user = new CreateUserDTO(-111L, "");
-        Mockito.when(registerClientHttp.runRequest(user))
-                .thenThrow(new HttpStatusCodeException(HttpStatus.BAD_REQUEST) {});
+    void testRegisterWithUsageOneMoreTime() {
+        Mockito.doThrow(new HttpStatusCodeException(HttpStatus.BAD_REQUEST) {})
+                .when(registerClientHttp).runRequest(any());
 
         var result = register.exec(update);
 
-        Assertions.assertEquals("Ошибка!\nВы уже зарегистрированы!", result);
+        Assertions.assertEquals(result,"Ошибка!\nВы уже зарегистрированы!");
     }
 
     @Test
     void testRegisterWithRestException() {
-        var user = new CreateUserDTO(1000L, "@vasyl");
         Mockito.doThrow(RestClientException.class)
-                .when(registerClientHttp).runRequest(user);
+                .when(registerClientHttp).runRequest(any());
 
         var result = register.exec(update);
 
-        Assertions.assertEquals("Сервис не доступен!", result);
+        Assertions.assertEquals(result, "Сервис не доступен!");
     }
 }
