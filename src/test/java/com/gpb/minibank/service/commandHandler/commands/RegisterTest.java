@@ -1,7 +1,6 @@
 package com.gpb.minibank.service.commandHandler.commands;
 
 import com.gpb.minibank.service.commandHandler.commands.clients.registerClient.registerClientImpl.RegisterClientHttp;
-import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateUserDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

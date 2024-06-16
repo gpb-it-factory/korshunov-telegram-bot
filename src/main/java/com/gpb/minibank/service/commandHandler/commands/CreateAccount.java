@@ -2,7 +2,6 @@ package com.gpb.minibank.service.commandHandler.commands;
 
 import com.gpb.minibank.service.commandHandler.commands.clients.createAccountClient.CreateAccountClient;
 import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateAccountDTO;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
