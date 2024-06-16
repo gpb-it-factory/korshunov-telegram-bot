@@ -8,6 +8,3 @@ bot:
       path: "http://localhost:8081/v2/users"
     create_account:
       path: "http://localhost:8081/v2/users/{id}/accounts"
-
-bot.name: GPBminibankBot
-bot.token: 7489963637:AAGkGSq1JEeP6fxi-uwYQpGum5ZkTBMWJrw
