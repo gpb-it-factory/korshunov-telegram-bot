@@ -5,6 +5,7 @@ import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateUserDT
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 @Component
@@ -19,10 +20,14 @@ public final class RegisterClientHttp implements RegisterClient {
     }
 
     public ResponseEntity<?> runRequest(CreateUserDTO createUserDTO) {
-        return restClient.post()
-                .uri(path)
-                .body(createUserDTO)
-                .retrieve()
-                .toBodilessEntity();
+        try {
+            return restClient.post()
+                    .uri(path)
+                    .body(createUserDTO)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (HttpClientErrorException error) {
+            return ResponseEntity.status(error.getStatusCode()).build();
+        }
     }
 }

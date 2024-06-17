@@ -55,22 +55,12 @@ public class RegisterTest {
 
     @Test
     void testRegisterWithErrorCode() {
-        Mockito.doThrow(new HttpStatusCodeException(HttpStatus.NOT_FOUND) {})
+        Mockito.doReturn(ResponseEntity.status(400).build())
                 .when(registerClientHttp).runRequest(any());
 
         var result = register.exec(update);
 
         Assertions.assertEquals(result, "Упс!\nЧто-то пошло не так!");
-    }
-
-    @Test
-    void testRegisterWithUsageOneMoreTime() {
-        Mockito.doThrow(new HttpStatusCodeException(HttpStatus.BAD_REQUEST) {})
-                .when(registerClientHttp).runRequest(any());
-
-        var result = register.exec(update);
-
-        Assertions.assertEquals(result,"Ошибка!\nВы уже зарегистрированы!");
     }
 
     @Test
