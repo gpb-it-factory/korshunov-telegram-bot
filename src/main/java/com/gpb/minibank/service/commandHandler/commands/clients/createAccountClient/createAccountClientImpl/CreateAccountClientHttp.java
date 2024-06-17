@@ -3,8 +3,10 @@ package com.gpb.minibank.service.commandHandler.commands.clients.createAccountCl
 import com.gpb.minibank.service.commandHandler.commands.clients.createAccountClient.CreateAccountClient;
 import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateAccountDTO;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClient;
 
 @Component
@@ -20,10 +22,14 @@ public final class CreateAccountClientHttp implements CreateAccountClient {
     }
 
     public ResponseEntity<?> runRequest(CreateAccountDTO createAccountDTO) {
-        return restClient.post()
-                .uri(path, createAccountDTO.getUserId())
-                .body(createAccountDTO)
-                .retrieve()
-                .toBodilessEntity();
+        try {
+            return restClient.post()
+                    .uri(path, createAccountDTO.getUserId())
+                    .body(createAccountDTO)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (HttpStatusCodeException error) {
+            return ResponseEntity.status(error.getStatusCode()).build();
+        }
     }
 }

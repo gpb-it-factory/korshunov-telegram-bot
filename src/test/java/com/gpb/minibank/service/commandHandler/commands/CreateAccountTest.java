@@ -54,8 +54,7 @@ public class CreateAccountTest {
 
     @Test
     void testRegisterWithErrorCode() {
-        Mockito.doThrow(new HttpStatusCodeException(HttpStatus.BAD_REQUEST) {
-        }).when(createAccountClientHttp).runRequest(any());
+        Mockito.doReturn(ResponseEntity.status(400).build()).when(createAccountClientHttp).runRequest(any());
 
         var result = createAccount.exec(update);
 

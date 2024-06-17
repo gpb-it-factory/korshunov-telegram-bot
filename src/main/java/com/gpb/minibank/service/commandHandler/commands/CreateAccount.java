@@ -34,9 +34,6 @@ public final class CreateAccount implements Command {
             var createAccountDTO = new CreateAccountDTO(update.getMessage().getChatId(), DEFAULT_NAME_OF_ACCOUNT);
             var response = createAccountClient.runRequest(createAccountDTO);
             return createMessage(response);
-        } catch (HttpStatusCodeException error) {
-            ResponseEntity<?> response = ResponseEntity.status(error.getStatusCode()).build();
-            return createMessage(response);
         } catch (RestClientException error) {
             return "Сервис не доступен!";
         }
