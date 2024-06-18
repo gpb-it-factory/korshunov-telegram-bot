@@ -10,13 +10,13 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class CreateUserDTO {
+public class CreateAccountDTO {
 
     @NotNull
     @Positive
     private Long userId;
 
     @NotBlank
-    private String userName;
+    private String accountName;
 
 }

@@ -33,9 +33,6 @@ public final class Register implements Command {
                     update.getMessage().getChat().getUserName());
             var response = registerClient.runRequest(createUserDTO);
             return createMessage(response);
-        } catch (HttpStatusCodeException error) {
-            ResponseEntity<?> response = ResponseEntity.status(error.getStatusCode()).build();
-            return createMessage(response);
         } catch (RestClientException error) {
             return "Сервис не доступен!";
         }
@@ -44,8 +41,6 @@ public final class Register implements Command {
     public String createMessage(ResponseEntity<?> response) {
         if (response.getStatusCode().isSameCodeAs(HttpStatus.NO_CONTENT)) {
             return "Вы успешно зарегистрированы!";
-        } else if (response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST)) {
-            return "Ошибка!\nВы уже зарегистрированы!";
         }
         return "Упс!\nЧто-то пошло не так!";
     }
