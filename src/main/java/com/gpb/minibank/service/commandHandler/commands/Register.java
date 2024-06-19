@@ -5,7 +5,6 @@ import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateUserDT
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
