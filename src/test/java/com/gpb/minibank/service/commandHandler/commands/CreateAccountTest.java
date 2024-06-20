@@ -53,7 +53,7 @@ public class CreateAccountTest {
     }
 
     @Test
-    void testRegisterWithErrorCode() {
+    void testRegisterWithError() {
         Mockito.doReturn(ResponseEntity.status(400).build()).when(createAccountClientHttp).runRequest(any());
 
         var result = createAccount.exec(update);
