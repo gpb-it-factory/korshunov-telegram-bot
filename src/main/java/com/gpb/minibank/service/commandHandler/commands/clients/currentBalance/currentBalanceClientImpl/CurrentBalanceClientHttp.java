@@ -1,13 +1,17 @@
 package com.gpb.minibank.service.commandHandler.commands.clients.currentBalance.currentBalanceClientImpl;
 
 import com.gpb.minibank.service.commandHandler.commands.clients.currentBalance.CurrentBalanceClient;
-import com.gpb.minibank.service.commandHandler.commands.dto.response.CurrentBalanceDTO;
+import com.gpb.minibank.service.commandHandler.commands.dto.response.AccountDTO;
+import com.gpb.minibank.service.commandHandler.commands.dto.response.Error;
+import com.gpb.minibank.service.commandHandler.commands.dto.response.Result;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-public class CurrentBalanceClientHttp implements CurrentBalanceClient {
+@Component
+public final class CurrentBalanceClientHttp implements CurrentBalanceClient {
 
     private final RestClient restClient;
 
@@ -19,14 +23,10 @@ public class CurrentBalanceClientHttp implements CurrentBalanceClient {
     }
 
     @Override
-    public ResponseEntity<?> runRequest(Long id) {
-        try {
-            return restClient.get()
-                    .uri(path, id)
-                    .retrieve()
-                    .toEntity(CurrentBalanceDTO.class);
-        } catch (HttpClientErrorException error) {
-            return ResponseEntity.status(error.getStatusCode()).build();
-        }
+    public ResponseEntity<Result<AccountDTO, Error>> runRequest(Long id) {
+        return restClient.get()
+                .uri(path, id)
+                .retrieve()
+                .toEntity(new ParameterizedTypeReference<>() {});
     }
 }

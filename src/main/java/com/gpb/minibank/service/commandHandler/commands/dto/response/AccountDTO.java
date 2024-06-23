@@ -1,17 +1,19 @@
 package com.gpb.minibank.service.commandHandler.commands.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class CurrentBalanceDTO {
+@EqualsAndHashCode
+public class AccountDTO {
+
+    private String accountId;
 
     private String accountName;
 
-    private BigDecimal amount;
+    private String amount;
 }
