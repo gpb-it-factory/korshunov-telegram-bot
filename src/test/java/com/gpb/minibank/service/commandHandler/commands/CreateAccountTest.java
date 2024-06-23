@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -45,7 +44,7 @@ public class CreateAccountTest {
     @Test
     void testCreateAccountWithCorrectData() {
         Mockito.doReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build())
-                .when(createAccountClientHttp).runRequest(any());
+                .when(createAccountClientHttp).runRequest(any(), any());
 
         var result = createAccount.exec(update);
 
@@ -54,7 +53,7 @@ public class CreateAccountTest {
 
     @Test
     void testRegisterWithError() {
-        Mockito.doReturn(ResponseEntity.status(400).build()).when(createAccountClientHttp).runRequest(any());
+        Mockito.doReturn(ResponseEntity.status(400).build()).when(createAccountClientHttp).runRequest(any(), any());
 
         var result = createAccount.exec(update);
 
@@ -64,7 +63,7 @@ public class CreateAccountTest {
     @Test
     void testRegisterWithRestException() {
         Mockito.doThrow(RestClientException.class)
-                .when(createAccountClientHttp).runRequest(any());
+                .when(createAccountClientHttp).runRequest(any(), any());
 
         var result = createAccount.exec(update);
 

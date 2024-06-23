@@ -4,5 +4,5 @@ import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateAccoun
 import org.springframework.http.ResponseEntity;
 
 public interface CreateAccountClient {
-    ResponseEntity<?> runRequest(CreateAccountDTO createAccountDTO);
+    ResponseEntity<?> runRequest(Long id, CreateAccountDTO createAccountDTO);
 }

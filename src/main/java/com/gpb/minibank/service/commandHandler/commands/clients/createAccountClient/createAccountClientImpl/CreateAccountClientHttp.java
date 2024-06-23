@@ -20,15 +20,15 @@ public final class CreateAccountClientHttp implements CreateAccountClient {
         this.restClient = RestClient.create();
     }
 
-    public ResponseEntity<?> runRequest(CreateAccountDTO createAccountDTO) {
+    public ResponseEntity<?> runRequest(Long id, CreateAccountDTO createAccountDTO) {
         try {
             return restClient.post()
-                    .uri(path, createAccountDTO.getUserId())
+                    .uri(path, id)
                     .body(createAccountDTO)
                     .retrieve()
                     .toBodilessEntity();
         } catch (HttpStatusCodeException error) {
-            return ResponseEntity.status(error.getStatusCode()).build();
+            return ResponseEntity.status(error.getStatusCode()).body(error.getMessage());
         }
     }
 }

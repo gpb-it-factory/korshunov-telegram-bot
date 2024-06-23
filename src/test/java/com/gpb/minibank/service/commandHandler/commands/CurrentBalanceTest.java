@@ -1,7 +1,9 @@
 package com.gpb.minibank.service.commandHandler.commands;
 
 import com.gpb.minibank.service.commandHandler.commands.clients.currentBalance.currentBalanceClientImpl.CurrentBalanceClientHttp;
-import com.gpb.minibank.service.commandHandler.commands.dto.response.CurrentBalanceDTO;
+import com.gpb.minibank.service.commandHandler.commands.dto.response.AccountDTO;
+import com.gpb.minibank.service.commandHandler.commands.dto.response.Error;
+import com.gpb.minibank.service.commandHandler.commands.dto.response.Result;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,12 +13,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -46,8 +49,9 @@ public class CurrentBalanceTest {
 
     @Test
     void testCurrentBalanceWithCorrectData() {
-        var currentBalanceDTO = new CurrentBalanceDTO("new", new BigDecimal("5000.00"));
-        var response = ResponseEntity.status(200).body(currentBalanceDTO);
+        var id = UUID.randomUUID().toString();
+        var accountDTO = new AccountDTO(id,"new", "5000.00");
+        var response = ResponseEntity.status(200).body(Result.response(accountDTO));
 
         Mockito.doReturn(response).when(currentBalanceClientHttp).runRequest(any());
 
@@ -56,11 +60,12 @@ public class CurrentBalanceTest {
 
     @Test
     void testCurrentBalanceWithError() {
-        var response = ResponseEntity.status(400).build();
+        var error = new Error("message", "type", "400", "trace_id");
+        var response = ResponseEntity.status(200).body(Result.error(error));
 
         Mockito.doReturn(response).when(currentBalanceClientHttp).runRequest(any());
 
-        Assertions.assertEquals(currentBalance.exec(update), "Упс!\nЧто-то пошло не так!");
+        Assertions.assertEquals(currentBalance.exec(update), "message");
     }
 
     @Test
@@ -68,5 +73,12 @@ public class CurrentBalanceTest {
         Mockito.doThrow(RestClientException.class).when(currentBalanceClientHttp).runRequest(any());
 
         Assertions.assertEquals(currentBalance.exec(update), "Сервис не доступен!");
+    }
+
+    @Test
+    void testCurrentBalanceWithHttpClientErrorException() {
+        Mockito.doThrow(HttpClientErrorException.class).when(currentBalanceClientHttp).runRequest(any());
+
+        Assertions.assertEquals("Ошибка!\nЧто-то пошло не так!", currentBalance.exec(update));
     }
 }

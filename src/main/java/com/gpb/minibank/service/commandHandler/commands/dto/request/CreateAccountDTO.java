@@ -12,10 +12,6 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class CreateAccountDTO {
 
-    @NotNull
-    @Positive
-    private Long userId;
-
     @NotBlank
     private String accountName;
 
