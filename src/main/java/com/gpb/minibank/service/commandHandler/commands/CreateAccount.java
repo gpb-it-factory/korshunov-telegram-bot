@@ -31,8 +31,8 @@ public final class CreateAccount implements Command {
     @Override
     public String exec(Update update) {
         try {
-            var createAccountDTO = new CreateAccountDTO(update.getMessage().getChatId(), DEFAULT_NAME_OF_ACCOUNT);
-            var response = createAccountClient.runRequest(createAccountDTO);
+            var createAccountDTO = new CreateAccountDTO(DEFAULT_NAME_OF_ACCOUNT);
+            var response = createAccountClient.runRequest(update.getMessage().getChatId(), createAccountDTO);
             return createMessage(response);
         } catch (RestClientException error) {
             return "Сервис не доступен!";

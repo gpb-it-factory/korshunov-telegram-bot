@@ -17,7 +17,7 @@ public final class CommandHandler {
     }
 
     public String work(Update update) {
-        var commandFromUser = update.getMessage().getText();
+        var commandFromUser = update.getMessage().getText().split(" ")[0];
         var command = commandList.stream()
                 .filter(someCommand -> someCommand.getName().equals(commandFromUser))
                 .findFirst();
