@@ -5,10 +5,13 @@ spring:
 bot:
   service:
     register:
-      path: "http://localhost:8081/v2/users"
+      path: "http://middle:8081/v2/users"
     create_account:
-      path: "http://localhost:8081/v2/users/{id}/accounts"
+      path: "http://middle:8081/v2/users/{id}/accounts"
     current_balance:
-      path: "http://localhost:8081/v2/users/{id}/accounts"
+      path: "http://middle:8081/v2/users/{id}/accounts"
     transfer:
-      path: "http://localhost:8081/v2/transfer"
+      path: "http://middle:8081/v2/transfer"
+
+bot.name: ${BOT_NAME}
+bot.token: ${BOT_TOKEN}

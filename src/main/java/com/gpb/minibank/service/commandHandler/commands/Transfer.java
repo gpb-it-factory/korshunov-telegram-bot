@@ -5,9 +5,11 @@ import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateTransf
 import com.gpb.minibank.service.commandHandler.commands.dto.response.Error;
 import com.gpb.minibank.service.commandHandler.commands.dto.response.Result;
 import com.gpb.minibank.service.commandHandler.commands.dto.response.TransferResponseDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -47,7 +49,7 @@ public final class Transfer implements Command {
         try {
             var response = tranferClient.runRequest(createTransferRequestDTO);
             return getMessage((ResponseEntity<Result<TransferResponseDTO, Error>>) response);
-        } catch (HttpClientErrorException error) {
+        } catch (HttpStatusCodeException error) {
             return "Ошибка!\nЧто-то пошло не так!";
         } catch (RestClientException error) {
             return "Сервис не доступен!";

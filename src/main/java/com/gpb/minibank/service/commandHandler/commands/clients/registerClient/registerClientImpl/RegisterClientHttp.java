@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClient;
 
 @Component
@@ -26,7 +27,7 @@ public final class RegisterClientHttp implements RegisterClient {
                     .body(createUserDTO)
                     .retrieve()
                     .toBodilessEntity();
-        } catch (HttpClientErrorException error) {
+        } catch (HttpStatusCodeException error) {
             return ResponseEntity.status(error.getStatusCode()).build();
         }
     }

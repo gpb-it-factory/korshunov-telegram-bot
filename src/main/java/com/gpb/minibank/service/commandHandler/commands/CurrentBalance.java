@@ -7,6 +7,7 @@ import com.gpb.minibank.service.commandHandler.commands.dto.response.Result;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -51,7 +52,7 @@ public final class CurrentBalance implements Command {
         try {
             var response = currentBalanceClient.runRequest(update.getMessage().getChatId());
             return getMessage((ResponseEntity<Result<AccountDTO, Error>>) response);
-        } catch (HttpClientErrorException error) {
+        } catch (HttpStatusCodeException error) {
             return "Ошибка!\nЧто-то пошло не так!";
         } catch (RestClientException error) {
             return "Сервис не доступен!";
