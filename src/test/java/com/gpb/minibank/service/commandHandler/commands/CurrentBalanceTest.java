@@ -57,7 +57,7 @@ public class CurrentBalanceTest {
 
         Mockito.doReturn(response).when(currentBalanceClientHttp).runRequest(any());
 
-        Assertions.assertEquals(currentBalance.exec(update), "Название счёта: new\nБаланс счёта: 5000.00");
+        Assertions.assertEquals(currentBalance.exec(update), "Название счёта: new\nБаланс счёта: 5000.00 руб.");
     }
 
     @Test
