@@ -14,6 +14,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -79,6 +81,14 @@ public class TransferTest {
         var result = transfer.exec(update);
 
         Assertions.assertEquals(result, "Сервис не доступен!");
+    }
+
+    @Test
+    void testCurrentBalanceWithHttpStatusCodeException() {
+        Mockito.doThrow(new HttpStatusCodeException(HttpStatus.BAD_REQUEST) {})
+                .when(transferClientHttp).runRequest(any());
+
+        Assertions.assertEquals("Ошибка!\nЧто-то пошло не так!", transfer.exec(update));
     }
 
     @Test

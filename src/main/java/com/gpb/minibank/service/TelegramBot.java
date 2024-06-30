@@ -40,17 +40,17 @@ public final class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            log.info("! Получено сообщение ! ");
+            log.info("-- Получено сообщение от пользователя --");
             var resultOfCommand = commandHandler.work(update);
-            log.info("Создаю ответ.");
+            log.info("-- Создаю ответ для пользователя --");
             var message = MessageCreater.createMessage(update.getMessage().getChatId(), resultOfCommand);
-            log.info("Ответ создан!");
+            log.info("-- Ответ для пользователя создан --");
             try {
-                log.info("Отправляю ответ.");
+                log.info(" -- Отправляю ответ пользователю --");
                 messageSender.sendMessage(message);
-                log.info("Ответ успешно отправлен!");
+                log.info("-- Ответ успешно отправлен пользователю --");
             } catch (TelegramApiException e) {
-                log.error("Произошла ошибка во время отправки ответа '{}'!", e.getMessage());
+                log.error("-- Произошла ошибка во время отправки ответа пользователю '{}' --", e.getMessage());
             }
         }
     }
