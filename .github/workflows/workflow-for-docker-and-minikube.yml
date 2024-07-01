@@ -1,4 +1,4 @@
-name: docker-and-minikube
+name: push-to-docker-and-minikube-test
 on:
   pull_request:
     branches:
@@ -32,6 +32,8 @@ jobs:
       - name: Build image
         run: |
           minikube image build -t ${{ vars.DOCKERHUB_USERNAME }}/telegram-bot:latest .
-      - name: Deploy to minikube
-        run:
+          minikube image build -t ${{ vars.DOCKERHUB_USERNAME }}/middle:latest .
+      - name: deploy middle and telegram-bot to minikube
+        run: |
           kubectl apply -f deployment/telegram-bot.yaml
+          kubectl apply -f deployment/middle.yaml

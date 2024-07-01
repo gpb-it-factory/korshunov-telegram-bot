@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: middle
+  labels:
+    app: web
+spec:
+  selector:
+    matchLabels:
+      app: middle
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: middle
+    spec:
+      containers:
+        - name: middle
+          imagePullPolicy: Always
+          image: nosoprirochka/middle
+          ports:
+            - containerPort: 8081
