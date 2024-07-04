@@ -5,12 +5,14 @@ import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateTransf
 import com.gpb.minibank.service.commandHandler.commands.dto.response.Error;
 import com.gpb.minibank.service.commandHandler.commands.dto.response.Result;
 import com.gpb.minibank.service.commandHandler.commands.dto.response.TransferResponseDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+@Slf4j
 @Component
 public final class TransferClientHttp implements TranferClient {
 
@@ -25,6 +27,7 @@ public final class TransferClientHttp implements TranferClient {
 
     @Override
     public ResponseEntity<Result<TransferResponseDTO, Error>> runRequest(CreateTransferRequestDTO createTransferRequestDTO) {
+        log.info("Отправляю запрос на перевод денежных средств");
         return restClient.post()
                 .uri(path)
                 .body(createTransferRequestDTO)

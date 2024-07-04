@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegram-bot
+  labels:
+    app: web
+spec:
+  selector:
+    matchLabels:
+      app: telegram-bot
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: telegram-bot
+    spec:
+      containers:
+        - name: telegram-bot
+          imagePullPolicy: Always
+          image: nosoprirochka/telegram-bot
+          ports:
+            - containerPort: 8080

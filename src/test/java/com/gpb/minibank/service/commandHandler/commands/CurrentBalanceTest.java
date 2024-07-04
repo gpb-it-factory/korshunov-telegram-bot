@@ -12,8 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -55,7 +57,7 @@ public class CurrentBalanceTest {
 
         Mockito.doReturn(response).when(currentBalanceClientHttp).runRequest(any());
 
-        Assertions.assertEquals(currentBalance.exec(update), "Название счёта: new\nБаланс счёта: 5000.00");
+        Assertions.assertEquals(currentBalance.exec(update), "Название счёта: new\nБаланс счёта: 5000.00 руб.");
     }
 
     @Test
@@ -76,8 +78,9 @@ public class CurrentBalanceTest {
     }
 
     @Test
-    void testCurrentBalanceWithHttpClientErrorException() {
-        Mockito.doThrow(HttpClientErrorException.class).when(currentBalanceClientHttp).runRequest(any());
+    void testCurrentBalanceWithHttpStatusCodeException() {
+        Mockito.doThrow(new HttpStatusCodeException(HttpStatus.BAD_REQUEST) {})
+                .when(currentBalanceClientHttp).runRequest(any());
 
         Assertions.assertEquals("Ошибка!\nЧто-то пошло не так!", currentBalance.exec(update));
     }

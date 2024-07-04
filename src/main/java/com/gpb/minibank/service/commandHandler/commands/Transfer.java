@@ -5,15 +5,17 @@ import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateTransf
 import com.gpb.minibank.service.commandHandler.commands.dto.response.Error;
 import com.gpb.minibank.service.commandHandler.commands.dto.response.Result;
 import com.gpb.minibank.service.commandHandler.commands.dto.response.TransferResponseDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 @Component
 public final class Transfer implements Command {
 
@@ -38,6 +40,7 @@ public final class Transfer implements Command {
     @Override
     public String exec(Update update) {
         if (!check(update.getMessage().getText())) {
+            log.info("-- Проверяю команду /transfer на соответствие форме --");
             return "Данные введены в некорректном формате.\nПроверьте правильность введённых данных!";
         }
         var dataFromUser = update.getMessage().getText().split(" ");
@@ -46,10 +49,13 @@ public final class Transfer implements Command {
                 dataFromUser[INDEX_OF_AMOUNT]);
         try {
             var response = tranferClient.runRequest(createTransferRequestDTO);
+            log.info("-- Ответ получен --");
             return getMessage((ResponseEntity<Result<TransferResponseDTO, Error>>) response);
-        } catch (HttpClientErrorException error) {
+        } catch (HttpStatusCodeException error) {
+            log.info("-- Произошла ошибка: {} --", error.getMessage());
             return "Ошибка!\nЧто-то пошло не так!";
         } catch (RestClientException error) {
+            log.info("-- Сервис не доступен --");
             return "Сервис не доступен!";
         }
     }
@@ -57,8 +63,10 @@ public final class Transfer implements Command {
     public String getMessage(ResponseEntity<Result<TransferResponseDTO, Error>> response) {
         var transferResponseDTO = response.getBody().getResponse();
         if (transferResponseDTO.isPresent()) {
+            log.info("Денежные средства успешно переведены");
             return "Перевод выполнен!\nИдентификатор перевода: " + transferResponseDTO.get().getTransferId();
         }
+        log.info("Произошла ошибка при запросе на перевод денежных средств");
         return response.getBody().getError().get().getMessage();
     }
 

@@ -1,0 +1,19 @@
+version: '3.8'
+name: minibank
+services:
+  telegram-bot:
+    container_name: bot
+    build: .
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - BOT_NAME=${BOT_NAME}
+    restart: always
+    ports:
+      - "8080:8080"
+
+  middle-service:
+    container_name: middle
+    build: ../korshunov-middle-service
+    restart: always
+    ports:
+      - "8081:8081"

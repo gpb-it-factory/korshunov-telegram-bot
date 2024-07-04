@@ -2,18 +2,20 @@ package com.gpb.minibank.service.commandHandler.commands.clients.createAccountCl
 
 import com.gpb.minibank.service.commandHandler.commands.clients.createAccountClient.CreateAccountClient;
 import com.gpb.minibank.service.commandHandler.commands.dto.request.CreateAccountDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClient;
 
+@Slf4j
 @Component
 public final class CreateAccountClientHttp implements CreateAccountClient {
 
-    private String path;
+    private final String path;
 
-    private RestClient restClient;
+    private final RestClient restClient;
 
     public CreateAccountClientHttp(@Value("${bot.service.create_account.path}") String path) {
         this.path = path;
@@ -21,6 +23,7 @@ public final class CreateAccountClientHttp implements CreateAccountClient {
     }
 
     public ResponseEntity<?> runRequest(Long id, CreateAccountDTO createAccountDTO) {
+        log.info("Отправляю запрос на создание счёта для пользователя с id: {}", id);
         try {
             return restClient.post()
                     .uri(path, id)
